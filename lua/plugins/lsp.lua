@@ -5,7 +5,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-		{ "j-hui/fidget.nvim",       opts = {} },
+		{ "j-hui/fidget.nvim", opts = {} },
 
 		"hrsh7th/cmp-nvim-lsp",
 	},
@@ -72,14 +72,35 @@ return {
 					},
 				},
 			},
-			volar = { filetypes = { "vue" } },
-			ts_ls = {},
+			volar = {
+				filetypes = { "vue" },
+				init_options = {
+					vue = {
+						hybirdMode = false,
+					},
+				},
+			},
+			ts_ls = {
+				init_options = {
+					plugins = {
+						{
+							name = "@vue/typescript-plugin",
+							location = "/home/rizqi/.nvm/versions/node/v20.13.1/lib/node_modules/@vue/typescript-plugin",
+							languages = { "javascript", "typescript", "vue" },
+						},
+					},
+				},
+				filetypes = {
+					"javascript",
+					"typescript",
+					"vue",
+				},
+			},
 			html = { filetypes = { "html", "twig", "hbs" } },
 			cssls = {},
 			tailwindcss = {},
 			dockerls = {},
 			sqlls = {},
-			terraformls = {},
 			jsonls = {},
 			yamlls = {},
 
