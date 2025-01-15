@@ -32,4 +32,5 @@ require("lazy").setup({
 	require("plugins.formating"),
 	require("plugins.dap-config"),
 	require("plugins.testing"),
+	require("plugins.git-blame"),
 })
