@@ -18,6 +18,7 @@ return {
 				"shfmt", -- Shell formatter
 				"checkmake", -- linter for Makefiles
 				"gofmt", -- Go formatter (or golines)
+				"clang-format", -- C formatter
 			},
 			automatic_installation = true,
 		})
@@ -29,7 +30,10 @@ return {
 			}),
 			formatting.stylua,
 			formatting.shfmt.with({ args = { "-i", "4" } }),
-			formatting.gofmt, -- Add Go formatter
+			formatting.gofmt,
+			formatting.clang_format.with({
+				extra_args = { "--style=Google" },
+			}),
 		}
 
 		local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
