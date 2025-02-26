@@ -5,7 +5,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-		{ "j-hui/fidget.nvim",       opts = {} },
+		{ "j-hui/fidget.nvim", opts = {} },
 
 		"hrsh7th/cmp-nvim-lsp",
 	},
@@ -81,12 +81,15 @@ return {
 				},
 			},
 			intelephense = {
-				settings = {
-					intelephense = {
-						files = {
-							maxSize = 1000000,
-						},
-					},
+				default_config = {
+					cmd = { "intelephense", "--stdio" },
+					filetypes = { "php" },
+					root_dir = function(pattern)
+						local cwd = vim.loop.cwd()
+						local root = require("lspconfig.util").root_pattern("composer.json", ".git")(pattern)
+
+						return require("lspconfig.util").path.is_descendant(cwd, root) and cwd or root
+					end,
 				},
 			},
 			clangd = {
