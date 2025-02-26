@@ -5,7 +5,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-		{ "j-hui/fidget.nvim", opts = {} },
+		{ "j-hui/fidget.nvim",       opts = {} },
 
 		"hrsh7th/cmp-nvim-lsp",
 	},
@@ -117,7 +117,6 @@ return {
 			sqlls = {},
 			jsonls = {},
 			yamlls = {},
-
 			lua_ls = {
 				settings = {
 					Lua = {

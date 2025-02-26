@@ -18,7 +18,6 @@ return {
 				"shfmt", -- Shell formatter
 				"checkmake", -- linter for Makefiles
 				"gofmt", -- Go formatter (or golines)
-				"clang-format", -- C formatter
 			},
 			automatic_installation = true,
 		})
