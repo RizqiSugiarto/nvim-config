@@ -12,9 +12,10 @@ return {
 		-- Formatters & linters for mason to install
 		require("mason-null-ls").setup({
 			ensure_installed = {
+				"golangci_lint", -- golang linter
+				"eslint_d", -- ts/js linter
 				"prettier", -- ts/js formatter
 				"stylua", -- lua formatter
-				"eslint_d", -- ts/js linter
 				"shfmt", -- Shell formatter
 				"checkmake", -- linter for Makefiles
 				"gofmt", -- Go formatter (or golines)
@@ -24,6 +25,7 @@ return {
 
 		local sources = {
 			diagnostics.checkmake,
+			diagnostics.golangci_lint,
 			formatting.prettier.with({
 				filetypes = { "html", "json", "yaml", "markdown", "typescript", "javascript", "jsx", "tsx", "vue" },
 			}),
