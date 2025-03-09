@@ -15,6 +15,7 @@ return {
 				"golangci_lint", -- golang linter
 				"eslint_d", -- ts/js linter
 				"prettier", -- ts/js formatter
+				"black", -- python formatter
 				"stylua", -- lua formatter
 				"shfmt", -- Shell formatter
 				"checkmake", -- linter for Makefiles
@@ -31,6 +32,7 @@ return {
 			}),
 			formatting.stylua,
 			formatting.shfmt.with({ args = { "-i", "4" } }),
+			formatting.black,
 			formatting.gofmt,
 			formatting.clang_format.with({
 				extra_args = { "--style=Google" },

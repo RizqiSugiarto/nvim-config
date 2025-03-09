@@ -4,9 +4,7 @@ return {
 		{ "williamboman/mason.nvim", config = true },
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-
-		{ "j-hui/fidget.nvim", opts = {} },
-
+		{ "j-hui/fidget.nvim",       opts = {} },
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
@@ -136,6 +134,18 @@ return {
 			sqlls = {},
 			jsonls = {},
 			yamlls = {},
+			pyright = {
+				cmd = { "pyright-langserver", "--stdio" },
+				filetypes = { "python" },
+				root_dir = require("lspconfig.util").root_pattern(
+					".git",
+					"setup.py",
+					"setup.cfg",
+					"requirements.txt",
+					"Pipfile",
+					"pyrightconfig.json"
+				),
+			},
 			lua_ls = {
 				settings = {
 					Lua = {
