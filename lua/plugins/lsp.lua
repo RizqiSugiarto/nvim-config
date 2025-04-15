@@ -4,7 +4,7 @@ return {
 		{ "williamboman/mason.nvim", config = true },
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		{ "j-hui/fidget.nvim",       opts = {} },
+		{ "j-hui/fidget.nvim", opts = {} },
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
@@ -97,6 +97,10 @@ return {
 			},
 			ts_ls = {
 				init_options = {
+					preferences = {
+						importModuleSpecifierPreference = "project-relative",
+						importModuleSpecifierEnding = "minimal",
+					},
 					plugins = {
 						{
 							name = "@vue/typescript-plugin",
