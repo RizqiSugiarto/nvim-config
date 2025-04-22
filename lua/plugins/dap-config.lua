@@ -68,38 +68,55 @@ return {
 			}
 		end,
 	},
-	-- Js / Ts DAP (manual installation) - https://github.com/mxsdev/nvim-dap-vscode-js
+
+	-- Install the DAP adapter via Mason
+	{
+		"jay-babu/mason-nvim-dap.nvim",
+		dependencies = {
+			"williamboman/mason.nvim",
+		},
+		config = function()
+			require("mason-nvim-dap").setup({
+				ensure_installed = { "js-debug-adapter" },
+				automatic_setup = true,
+			})
+		end,
+	},
+
+	-- Language-specific DAP config for JS/TS
 	{
 		"mxsdev/nvim-dap-vscode-js",
 		dependencies = {
 			"mfussenegger/nvim-dap",
-			"microsoft/vscode-js-debug", -- This will be automatically installed
+			"microsoft/vscode-js-debug",
 		},
 		config = function()
-			local debug_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"
-			require("dap-vscode-js").setup({
-				-- node_path = "node", -- Path to node if you want to override
-				debugger_path = debug_path,
-				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge" }, -- Add adapters you need
-			})
+			local dap = require("dap")
+			require("dap.ext.vscode").load_launchjs(nil, {})
 
-			require("dap").adapters["pwa-node"] = {
+			-- Setup the JavaScript/TypeScript DAP adapter
+			dap.adapters["pwa-node"] = {
 				type = "server",
 				host = "127.0.0.1",
-				port = "${port}",
+				port = 8123,
 				executable = {
-					command = "node",
-					args = {
-						debug_path .. "/out/src/vsDebugServer.js",
-						"${port}",
-					},
+					command = "js-debug-adapter", -- Ensure js-debug-adapter is available in your PATH
 				},
 			}
 
-			require("dap.ext.vscode").load_launchjs(nil, {
-				["pwa-node"] = { "javascript", "typescript" },
-				["node"] = { "javascript", "typescript" },
-			})
+			-- Configure JavaScript/TypeScript launch configurations
+			for _, language in ipairs({ "typescript", "javascript" }) do
+				dap.configurations[language] = {
+					{
+						type = "pwa-node",
+						request = "launch",
+						name = "Launch file",
+						program = "${file}",
+						cwd = "${workspaceFolder}",
+						runtimeExecutable = "node",
+					},
+				}
+			end
 		end,
 	},
 }
