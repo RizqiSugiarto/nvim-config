@@ -90,10 +90,36 @@ return {
 					end,
 				},
 			},
+			terraformls = {
+				cmd = { "terraform-ls", "serve" },
+				filetypes = { "terraform", "terraform-vars" },
+				root_dir = require("lspconfig.util").root_pattern(".terraform", ".git"),
+			},
 			clangd = {
 				cmd = { "clangd" },
 				filetypes = { "c", "cpp", "objc", "objcpp" },
 				root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
+			},
+			rust_analyzer = {
+				cmd = { "rust-analyzer" }, -- Command to launch rust-analyzer
+				filetypes = { "rust" }, -- Filetypes to associate with rust-analyzer
+				settings = {
+					["rust-analyzer"] = {
+						-- Enable diagnostics
+						diagnostics = {
+							enable = true,
+						},
+						-- Enable formatting
+						rustfmt = {
+							enable = true,
+						},
+						-- Enable code actions (like fix imports)
+						assist = {
+							importGranularity = "module",
+							importPrefix = "self",
+						},
+					},
+				},
 			},
 			ts_ls = {
 				init_options = {
