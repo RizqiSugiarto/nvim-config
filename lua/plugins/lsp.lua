@@ -25,6 +25,12 @@ return {
 				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
 				map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+				-- Add manual format keymap
+				map("<leader>f", function()
+					vim.lsp.buf.format({ async = true })
+				end, "[F]ormat")
+
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
 				if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 					local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
@@ -54,6 +60,15 @@ return {
 						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 					end, "[T]oggle Inlay [H]ints")
 				end
+			end,
+		})
+
+		-- Auto-format on save for React/Next.js files
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			group = vim.api.nvim_create_augroup("auto-format", { clear = true }),
+			pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.json" },
+			callback = function()
+				vim.lsp.buf.format({ async = false })
 			end,
 		})
 
@@ -101,8 +116,8 @@ return {
 				root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
 			},
 			rust_analyzer = {
-				cmd = { "rust-analyzer" }, -- Command to launch rust-analyzer
-				filetypes = { "rust" }, -- Filetypes to associate with rust-analyzer
+				cmd = { "rust-analyzer" },
+				filetypes = { "rust" },
 				settings = {
 					["rust-analyzer"] = {
 						-- Enable diagnostics
@@ -204,6 +219,8 @@ return {
 		local ensure_installed = vim.tbl_keys(servers or {})
 		vim.list_extend(ensure_installed, {
 			"stylua",
+			"prettier", -- Add prettier for JavaScript/TypeScript formatting
+			"eslint_d", -- Add eslint for linting (optional but recommended)
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
