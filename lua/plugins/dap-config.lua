@@ -28,7 +28,12 @@ return {
 		dependencies = { "mfussenegger/nvim-dap" },
 		config = function()
 			local dap = require("dap")
-			require("dap-go").setup()
+			require("dap-go").setup({
+				delve = {
+					path = vim.fn.expand("~/.gvm/pkgsets/go1.25.3/global/bin/dlv"),
+					args = { "--check-go-version=false" },
+				},
+			})
 			require("dap.ext.vscode").load_launchjs(nil, {})
 
 			dap.adapters.go = function(callback, _)
@@ -38,13 +43,14 @@ return {
 						host = "127.0.0.1",
 						port = 38697,
 						executable = {
-							command = "dlv",
+							command = vim.fn.expand("~/.gvm/pkgsets/go1.25.3/global/bin/dlv"),
 							args = {
 								"dap",
 								"-l",
 								"127.0.0.1:38697",
 								"--log",
 								"--log-output=dap",
+								"--check-go-version=false",
 							},
 							detached = true,
 						},
