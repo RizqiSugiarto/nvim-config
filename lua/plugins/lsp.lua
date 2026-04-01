@@ -158,23 +158,26 @@ return {
 			},
 			html = { filetypes = { "html", "twig", "hbs" } },
 			cssls = {},
-			tailwindcss = {
-				classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
-				includeLanguages = {
-					htmlangular = "html",
-					templ = "html",
-				},
-				lint = {
-					cssConflict = "warning",
-					invalidApply = "error",
-					invalidConfigPath = "error",
-					invalidScreen = "error",
-					invalidTailwindDirective = "error",
-					invalidVariant = "error",
-					recommendedVariantOrder = "warning",
-				},
-				validate = true,
-			},
+			-- tailwindcss = {
+			-- 	classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+			-- 	includeLanguages = {
+			-- 		htmlangular = "html",
+			-- 		templ = "html",
+			-- 	},
+			-- 	lint = {
+			-- 		cssConflict = "ignore",
+			-- 		invalidApply = "ignore",
+			-- 		invalidConfigPath = "ignore",
+			-- 		invalidScreen = "ignore",
+			-- 		invalidTailwindDirective = "ignore",
+			-- 		invalidVariant = "ignore",
+			-- 		recommendedVariantOrder = "ignore",
+			-- 	},
+			-- 	validate = false, -- Disable validation
+			-- 	experimental = {
+			-- 		classRegex = {}, -- Clear any experimental regex if present
+			-- 	},
+			-- },
 			dockerls = {},
 			sqlls = {},
 			jsonls = {},
