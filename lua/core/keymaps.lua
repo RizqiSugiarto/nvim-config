@@ -37,14 +37,14 @@ vim.keymap.set("n", "<Right>", ":vertical resize +2<CR>", opts)
 -- Buffers
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", opts)
 vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", opts)
-vim.keymap.set("n", "<leader>x", ":bdelete!<CR>", opts) -- close buffer
+vim.keymap.set("n", "<leader>x", ":bdelete!<CR>", opts)            -- close buffer
 vim.keymap.set("n", "<leader>xa", ":bufdo bd | tabonly<CR>", opts) -- close all buffer
-vim.keymap.set("n", "<leader>b", "<cmd> enew <CR>", opts) -- new buffer
+vim.keymap.set("n", "<leader>b", "<cmd> enew <CR>", opts)          -- new buffer
 
 -- Window management
-vim.keymap.set("n", "<leader>v", "<C-w>v", opts) -- split window vertically
-vim.keymap.set("n", "<leader>h", "<C-w>s", opts) -- split window horizontally
-vim.keymap.set("n", "<leader>se", "<C-w>=", opts) -- make split windows equal width & height
+vim.keymap.set("n", "<leader>v", "<C-w>v", opts)      -- split window vertically
+vim.keymap.set("n", "<leader>h", "<C-w>s", opts)      -- split window horizontally
+vim.keymap.set("n", "<leader>se", "<C-w>=", opts)     -- make split windows equal width & height
 vim.keymap.set("n", "<leader>xs", ":close<CR>", opts) -- close current split window
 
 -- Navigate between splits
@@ -54,10 +54,10 @@ vim.keymap.set("n", "<C-h>", ":wincmd h<CR>", opts)
 vim.keymap.set("n", "<C-l>", ":wincmd l<CR>", opts)
 
 -- Tabs
-vim.keymap.set("n", "<leader>to", ":tabnew<CR>", opts) -- open new tab
+vim.keymap.set("n", "<leader>to", ":tabnew<CR>", opts)   -- open new tab
 vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", opts) -- close current tab
-vim.keymap.set("n", "<leader>tn", ":tabn<CR>", opts) --  go to next tab
-vim.keymap.set("n", "<leader>tp", ":tabp<CR>", opts) --  go to previous tab
+vim.keymap.set("n", "<leader>tn", ":tabn<CR>", opts)     --  go to next tab
+vim.keymap.set("n", "<leader>tp", ":tabp<CR>", opts)     --  go to previous tab
 
 -- Toggle line wrapping
 vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
@@ -91,3 +91,48 @@ vim.keymap.set("n", "<leader>or", ":lua require('dap').restart()<CR>", { silent 
 
 vim.keymap.set("n", "<leader>du", ":lua require('dapui').open()<CR>", { silent = true })
 vim.keymap.set("n", "<leader>dc", ":lua require('dapui').close()<CR>", { silent = true })
+
+-- Antigravity integration
+
+vim.keymap.set("n", "<leader>ac", "<cmd>Antigravity<CR>", {
+    desc = "Antigravity: Toggle Terminal",
+    silent = true,
+})
+
+vim.keymap.set("n", "<leader>ar", "<cmd>AntigravityResume<CR>", {
+    desc = "Antigravity: Resume Session",
+    silent = true,
+})
+
+vim.keymap.set("n", "<leader>am", "<cmd>AntigravitySelectModel<CR>", {
+    desc = "Antigravity: Select Model",
+    silent = true,
+})
+
+vim.keymap.set({ "n", "v" }, "<leader>aa", "<cmd>AntigravityAsk<CR>", {
+    desc = "Antigravity: Ask",
+    silent = true,
+})
+
+vim.keymap.set("n", "<leader>ab", function()
+    require("antigravity-cli.integrations").add_to_context(vim.api.nvim_buf_get_name(0))
+end, {
+    desc = "Antigravity: Add Buffer Context",
+    silent = true,
+})
+
+vim.keymap.set("n", "<leader>ay", "<cmd>AntigravityDiffAccept<CR>", {
+    desc = "Antigravity: Accept Diff",
+    silent = true,
+})
+
+vim.keymap.set("n", "<leader>an", "<cmd>AntigravityDiffDeny<CR>", {
+    desc = "Antigravity: Reject Diff",
+    silent = true,
+})
+
+-- antigravity terminal movement
+vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]])
+vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]])
+vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]])
+vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]])
