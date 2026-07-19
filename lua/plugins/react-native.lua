@@ -19,6 +19,9 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 		opts = {
+			server = {
+				enabled = false, -- don't spawn tailwindcss-language-server; piggyback on ts_ls instead
+			},
 			document_color = {
 				enabled = true,
 				kind = "inline",

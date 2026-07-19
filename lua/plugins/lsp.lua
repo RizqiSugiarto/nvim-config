@@ -160,26 +160,22 @@ return {
 			},
 			html = { filetypes = { "html", "twig", "hbs" } },
 			cssls = {},
-			-- tailwindcss = {
-			-- 	classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
-			-- 	includeLanguages = {
-			-- 		htmlangular = "html",
-			-- 		templ = "html",
-			-- 	},
-			-- 	lint = {
-			-- 		cssConflict = "ignore",
-			-- 		invalidApply = "ignore",
-			-- 		invalidConfigPath = "ignore",
-			-- 		invalidScreen = "ignore",
-			-- 		invalidTailwindDirective = "ignore",
-			-- 		invalidVariant = "ignore",
-			-- 		recommendedVariantOrder = "ignore",
-			-- 	},
-			-- 	validate = false, -- Disable validation
-			-- 	experimental = {
-			-- 		classRegex = {}, -- Clear any experimental regex if present
-			-- 	},
-			-- },
+			tailwindcss = {
+				-- Only start if a tailwind config exists in the project root.
+				-- This prevents the LSP from spawning in non-Tailwind projects
+				-- and consuming unnecessary resources.
+				root_dir = require("lspconfig.util").root_pattern(
+					"tailwind.config.js",
+					"tailwind.config.ts",
+					"tailwind.config.cjs",
+					"tailwind.config.mjs"
+				),
+				settings = {
+					tailwindCSS = {
+						classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+					},
+				},
+			},
 			dockerls = {},
 			sqlls = {},
 			jsonls = {},
@@ -232,6 +228,10 @@ return {
 		require("mason-lspconfig").setup({
 			handlers = {
 				function(server_name)
+					-- Only set up servers explicitly defined in the `servers` table
+					if not servers[server_name] then
+						return
+					end
 					local server = servers[server_name] or {}
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 					require("lspconfig")[server_name].setup(server)
