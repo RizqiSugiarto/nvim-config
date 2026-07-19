@@ -28,7 +28,7 @@ return {
 			diagnostics.checkmake,
 			diagnostics.golangci_lint,
 			formatting.prettier.with({
-				filetypes = { "html", "json", "yaml", "markdown", "typescript", "javascript", "jsx", "tsx", "vue" },
+				filetypes = { "html", "json", "yaml", "markdown", "typescript", "typescriptreact", "javascript", "javascriptreact", "jsx", "tsx", "vue" },
 			}),
 			formatting.stylua,
 			formatting.shfmt.with({ args = { "-i", "4" } }),

@@ -34,4 +34,5 @@ require("lazy").setup({
 	require("plugins.testing"),
 	require("plugins.git-blame"),
 	require("plugins.antigravity"),
+	require("plugins.react-native"),
 })
