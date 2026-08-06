@@ -94,16 +94,16 @@ return {
 				},
 			},
 			intelephense = {
-				default_config = {
-					cmd = { "intelephense", "--stdio" },
-					filetypes = { "php" },
-					root_dir = function(pattern)
-						local cwd = vim.loop.cwd()
-						local root = require("lspconfig.util").root_pattern("composer.json", ".git")(pattern)
-
-						return require("lspconfig.util").path.is_descendant(cwd, root) and cwd or root
-					end,
-				},
+				cmd = { "intelephense", "--stdio" },
+				filetypes = { "php" },
+				root_dir = function(fname)
+					local cwd = vim.uv.cwd()
+					local root = require("lspconfig.util").root_pattern("composer.json", ".git")(fname)
+					if root and cwd and vim.startswith(root, cwd) then
+						return cwd
+					end
+					return root
+				end,
 			},
 			terraformls = {
 				cmd = { "terraform-ls", "serve" },
@@ -189,8 +189,30 @@ return {
 					"setup.cfg",
 					"requirements.txt",
 					"Pipfile",
+					"pyproject.toml",
+					"uv.lock",
 					"pyrightconfig.json"
 				),
+				settings = {
+					python = {
+						analysis = {
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "openFilesOnly", -- Lightweight: only diagnose open files
+						},
+					},
+				},
+				before_init = function(_, config)
+					local uv = vim.uv or vim.loop
+					local root = config.root_dir
+					if vim.env.VIRTUAL_ENV then
+						config.settings.python.pythonPath = vim.fs.joinpath(vim.env.VIRTUAL_ENV, "bin", "python")
+					elseif root and uv.fs_stat(vim.fs.joinpath(root, ".venv")) then
+						config.settings.python.pythonPath = vim.fs.joinpath(root, ".venv", "bin", "python")
+					else
+						config.settings.python.pythonPath = "python"
+					end
+				end,
 			},
 			lua_ls = {
 				settings = {
@@ -217,7 +239,14 @@ return {
 
 		require("mason").setup()
 
-		local ensure_installed = vim.tbl_keys(servers or {})
+		-- Build the Mason install list, mapping lspconfig names to Mason package names where they differ
+		local mason_name_map = {
+			volar = "vue-language-server",
+		}
+		local ensure_installed = {}
+		for server_name, _ in pairs(servers) do
+			table.insert(ensure_installed, mason_name_map[server_name] or server_name)
+		end
 		vim.list_extend(ensure_installed, {
 			"stylua",
 			"prettier", -- Add prettier for JavaScript/TypeScript formatting
@@ -226,17 +255,16 @@ return {
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		require("mason-lspconfig").setup({
-			handlers = {
-				function(server_name)
-					-- Only set up servers explicitly defined in the `servers` table
-					if not servers[server_name] then
-						return
-					end
-					local server = servers[server_name] or {}
-					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					require("lspconfig")[server_name].setup(server)
-				end,
-			},
+			automatic_enable = false, -- disable automatic enable; we set up servers manually below
 		})
+
+		-- Set up each server using the Nvim 0.11 native API (vim.lsp.config + vim.lsp.enable)
+		-- lspconfig is still loaded for its built-in default configs and root_pattern helpers,
+		-- but we no longer call the deprecated require('lspconfig')[server].setup() entrypoint.
+		for server_name, server in pairs(servers) do
+			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+			vim.lsp.config(server_name, server)
+			vim.lsp.enable(server_name)
+		end
 	end,
 }

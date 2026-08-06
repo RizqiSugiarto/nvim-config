@@ -34,8 +34,6 @@ return {
 					args = { "--check-go-version=false" },
 				},
 			})
-			require("dap.ext.vscode").load_launchjs(nil, {})
-
 			dap.adapters.go = function(callback, _)
 				vim.defer_fn(function()
 					callback({
@@ -98,7 +96,6 @@ return {
 		},
 		config = function()
 			local dap = require("dap")
-			require("dap.ext.vscode").load_launchjs(nil, {})
 
 			-- Setup the JavaScript/TypeScript DAP adapter
 			dap.adapters["pwa-node"] = {

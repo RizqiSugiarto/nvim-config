@@ -8,7 +8,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	if vim.v.shell_error ~= 0 then
 		vim.api.nvim_echo({
 			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out, "WarningMsg" },
+			{ out,                            "WarningMsg" },
 			{ "\nPress any key to exit..." },
 		}, true, {})
 		vim.fn.getchar()
@@ -16,6 +16,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 vim.opt.rtp:prepend(lazypath)
+-- Silence Neovim deprecation warnings
+vim.deprecate = function(...) end
 
 require("lazy").setup({
 	require("plugins.neotree"),
@@ -35,4 +37,6 @@ require("lazy").setup({
 	require("plugins.git-blame"),
 	require("plugins.antigravity"),
 	require("plugins.react-native"),
+	require("plugins.snack"),
+	require("plugins.opencode"),
 })

@@ -21,7 +21,6 @@ return {
 				"checkmake", -- linter for Makefiles
 				"gofmt", -- Go formatter (or golines)
 			},
-			automatic_installation = true,
 		})
 
 		local sources = {
