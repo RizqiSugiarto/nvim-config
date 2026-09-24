@@ -28,6 +28,7 @@ require("lazy").setup({
 	require("plugins.telescope"),
 	require("plugins.autocompletion"),
 	require("plugins.lsp"),
+	require("plugins.helm"),
 	require("plugins.indent-line"),
 	require("plugins.misc"),
 	require("plugins.gitsign"),

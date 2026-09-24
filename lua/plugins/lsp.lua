@@ -180,6 +180,15 @@ return {
 			sqlls = {},
 			jsonls = {},
 			yamlls = {},
+			helm_ls = {
+				settings = {
+					["helm-ls"] = {
+						yamlls = {
+							path = "yaml-language-server",
+						},
+					},
+				},
+			},
 			pyright = {
 				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
@@ -242,6 +251,7 @@ return {
 		-- Build the Mason install list, mapping lspconfig names to Mason package names where they differ
 		local mason_name_map = {
 			volar = "vue-language-server",
+			helm_ls = "helm-ls",
 		}
 		local ensure_installed = {}
 		for server_name, _ in pairs(servers) do
